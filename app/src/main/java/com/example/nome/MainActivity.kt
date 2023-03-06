@@ -36,7 +36,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     var sliderPosition by remember {
-        mutableStateOf(0f)
+        mutableStateOf(60f)
+    }
+    val bpm: MutableState<Int> = remember {
+        mutableStateOf(60)
     }
     //container
     Column (
@@ -53,42 +56,57 @@ fun MainScreen() {
         //slider
         Slider(
             value = sliderPosition,
-            valueRange = 0f..100f,
-            onValueChange = {sliderPosition = it}
+            valueRange = 20f..255f,
+            onValueChange = {
+                sliderPosition = it
+                bpm.value = sliderPosition.toInt()
+            }
         )
 
         // buttons +-1 bpm
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                bpm.value -= 1
+                sliderPosition = bpm.value.toFloat()
+            }) {
                 Text(text = "-1")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
             
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                bpm.value += 1
+                sliderPosition = bpm.value.toFloat()
+            }) {
                 Text(text = "+1")
             }
         }
 
         // display BPM
         Text(
-            text = "BPM",
-            fontSize = 36.sp
+            text = bpm.value.toString(),
+            fontSize = 36.sp,
         )
 
         // buttons +-10 bpm
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                bpm.value -= 10
+                sliderPosition = bpm.value.toFloat()
+            }) {
                 Text(text = "-10")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
 
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                bpm.value += 10
+                sliderPosition = bpm.value.toFloat()
+            }) {
                 Text(text = "+10")
             }
         }
