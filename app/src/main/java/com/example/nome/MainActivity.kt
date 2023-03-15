@@ -1,6 +1,8 @@
 package com.example.nome
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.provider.MediaStore.Audio.Media
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -11,10 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.nome.ui.theme.NomeTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
+    //gets local context bc mediaplayer has two parameters which is context and audio
+    val mContext = LocalContext.current
+    val mMediaPlayer = MediaPlayer.create(mContext, R.raw.metornome)
     var sliderPosition by remember {
         mutableStateOf(60f)
     }
@@ -112,11 +120,14 @@ fun MainScreen() {
         }
 
         // FAB for play/stop
-        FloatingActionButton(onClick = { /*TODO*/ }) {
+        //onclick play media works.
+        FloatingActionButton(onClick = { mMediaPlayer.start() }
+        ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = "Start/Stop")
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
