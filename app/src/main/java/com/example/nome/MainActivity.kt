@@ -1,5 +1,6 @@
 package com.example.nome
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Media
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.nome.ui.theme.NomeTheme
+import kotlin.concurrent.thread
 
 
 class MainActivity : ComponentActivity() {
@@ -43,6 +45,7 @@ fun MainScreen() {
     //gets local context bc mediaplayer has two parameters which is context and audio
     val mContext = LocalContext.current
     val mMediaPlayer = MediaPlayer.create(mContext, R.raw.metornome)
+    val playingSound: MutableState<Boolean> = remember { mutableStateOf(false)}
     var sliderPosition by remember {
         mutableStateOf(60f)
     }
@@ -121,10 +124,33 @@ fun MainScreen() {
 
         // FAB for play/stop
         //onclick play media works.
-        FloatingActionButton(onClick = { mMediaPlayer.start() }
-        ) {
+        FloatingActionButton(onClick = {
+            mMediaPlayer.start()
+            if(playingSound.value == true){
+                playingSound.value = false
+            }
+            if(playingSound.value == false){
+                playingSound.value = true
+            }
+        }) {
+            while (playingSound.value == true){
+                playSound(mContext, 60)
+            }
             Icon(Icons.Filled.PlayArrow, contentDescription = "Start/Stop")
+
         }
+    }
+}
+
+fun playSound(ctx:Context, bpm: Int){
+    val beats = 10
+    val mMediaPlayer = MediaPlayer.create(ctx, R.raw.metornome)
+    val delay = (60.0 / bpm * 1000).toLong()
+    var count = 0
+    while(count < beats) {
+        mMediaPlayer.start()
+        Thread.sleep(delay)
+        count++
     }
 }
 
