@@ -49,9 +49,12 @@ fun MainScreen() {
     var sliderPosition by remember {
         mutableStateOf(60f)
     }
+    var buttonClicked = false
     val bpm: MutableState<Int> = remember {
         mutableStateOf(60)
     }
+    var delay = (60.0 / bpm.value * 1000).toLong()
+
     //container
     Column (
         modifier = Modifier.padding(20.dp),
@@ -122,27 +125,26 @@ fun MainScreen() {
             }
         }
 
+        //Need a handler to run metronome in seperate thread
+
         // FAB for play/stop
         //onclick play media works.
         FloatingActionButton(onClick = {
-            mMediaPlayer.start()
-            if(playingSound.value == true){
-                playingSound.value = false
+            buttonClicked = buttonClicked != true
+            //mMediaPlayer.start()
+            while(buttonClicked){
+                mMediaPlayer.start()
+                Thread.sleep(delay)
             }
-            if(playingSound.value == false){
-                playingSound.value = true
-            }
-        }) {
-            while (playingSound.value == true){
-                playSound(mContext, 60)
-            }
+        }
+        )
+        {
             Icon(Icons.Filled.PlayArrow, contentDescription = "Start/Stop")
-
         }
     }
 }
 
-fun playSound(ctx:Context, bpm: Int){
+/*fun playSound(ctx:Context, bpm: Int){
     val beats = 10
     val mMediaPlayer = MediaPlayer.create(ctx, R.raw.metornome)
     val delay = (60.0 / bpm * 1000).toLong()
@@ -152,7 +154,7 @@ fun playSound(ctx:Context, bpm: Int){
         Thread.sleep(delay)
         count++
     }
-}
+}*/
 
 
 @Preview(showBackground = true)
