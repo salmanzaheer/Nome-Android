@@ -1,7 +1,6 @@
 package com.example.nome
 
 import android.os.Bundle
-import android.provider.MediaStore.Audio.Media
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,6 @@ import android.media.ToneGenerator
 import android.os.Handler
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,8 +44,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     //gets local context bc mediaplayer has two parameters which is context and audio
-    val mContext = LocalContext.current
-    val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
     var sliderPosition by remember {
         mutableStateOf(60f)
     }
@@ -141,12 +137,12 @@ fun MainScreen() {
             if(!MetronomeState)
             {
                 MetronomeState = true
-                startMetronome(60)
+
+                startMetronome(bpm.value.toLong())
             }
             else{
                 stopMetronome()
             }
-
         }
         )
         {
