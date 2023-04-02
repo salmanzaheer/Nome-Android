@@ -1,7 +1,5 @@
 package com.example.nome
 
-import android.content.Context
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Media
 import androidx.activity.ComponentActivity
@@ -12,16 +10,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import android.media.AudioManager
+import android.media.ToneGenerator
+import android.os.Handler
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.nome.ui.theme.NomeTheme
-import kotlin.concurrent.thread
+import java.util.Timer
+import kotlin.concurrent.timerTask
 
+var MetronomeState = false
+var metronome: Timer = Timer("metronome", true)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,16 +47,15 @@ class MainActivity : ComponentActivity() {
 fun MainScreen() {
     //gets local context bc mediaplayer has two parameters which is context and audio
     val mContext = LocalContext.current
-    val mMediaPlayer = MediaPlayer.create(mContext, R.raw.metornome)
-    val playingSound: MutableState<Boolean> = remember { mutableStateOf(false)}
+    val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
     var sliderPosition by remember {
         mutableStateOf(60f)
     }
-    var buttonClicked = false
     val bpm: MutableState<Int> = remember {
         mutableStateOf(60)
     }
     var delay = (60.0 / bpm.value * 1000).toLong()
+    var mainHandler: Handler
 
     //container
     Column (
@@ -71,6 +73,12 @@ fun MainScreen() {
         Slider(
             value = sliderPosition,
             valueRange = 20f..255f,
+            colors = SliderDefaults.colors(
+                thumbColor = Color(0xffE74E35),
+                activeTrackColor = Color(0xFFE2634F),
+                inactiveTrackColor = Color(0xFFD3ACA5)
+            ),
+
             onValueChange = {
                 sliderPosition = it
                 bpm.value = sliderPosition.toInt()
@@ -130,12 +138,15 @@ fun MainScreen() {
         // FAB for play/stop
         //onclick play media works.
         FloatingActionButton(onClick = {
-            buttonClicked = buttonClicked != true
-            //mMediaPlayer.start()
-            while(buttonClicked){
-                mMediaPlayer.start()
-                Thread.sleep(delay)
+            if(!MetronomeState)
+            {
+                MetronomeState = true
+                startMetronome(60)
             }
+            else{
+                stopMetronome()
+            }
+
         }
         )
         {
@@ -155,6 +166,45 @@ fun MainScreen() {
         count++
     }
 }*/
+//CHANGE BPM TO WORK WITH SLIDER SET TO 60 RN
+fun calculateSleepDuration(bpm: Long): Long {
+    return (1000 * (60 / bpm.toDouble())).toLong()
+}
+fun startMetronome(bpm: Long){
+    val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
+    if(!MetronomeState){
+        return
+    }
+    MetronomeState = true
+
+    /*timerTask {
+        val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+        toneGenerator.startTone(MetronomeTone)
+        toneGenerator.release()
+    }*/
+
+    metronome.schedule(
+        timerTask {
+            val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+            toneGenerator.startTone(MetronomeTone)
+            toneGenerator.release()
+        },
+        0L,
+        calculateSleepDuration(bpm)
+    )
+}
+
+fun stopMetronome(){
+    MetronomeState = false
+    metronome.cancel()
+    newBpm()
+}
+
+fun newBpm(){
+    if(!MetronomeState){
+        metronome = Timer("metronome", true)
+    }
+}
 
 
 @Preview(showBackground = true)
