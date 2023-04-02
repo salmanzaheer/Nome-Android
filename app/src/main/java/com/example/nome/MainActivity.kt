@@ -23,6 +23,7 @@ import kotlin.concurrent.timerTask
 
 var MetronomeState = false
 var metronome: Timer = Timer("metronome", true)
+var lastBpm: Int = 0
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +54,7 @@ fun MainScreen() {
     var delay = (60.0 / bpm.value * 1000).toLong()
     var mainHandler: Handler
 
+
     //container
     Column (
         modifier = Modifier.padding(20.dp),
@@ -78,6 +80,10 @@ fun MainScreen() {
             onValueChange = {
                 sliderPosition = it
                 bpm.value = sliderPosition.toInt()
+                if(MetronomeState){
+                    stopMetronome()
+                    Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                }
             }
         )
 
@@ -137,7 +143,7 @@ fun MainScreen() {
             if(!MetronomeState)
             {
                 MetronomeState = true
-
+                lastBpm = bpm.value
                 startMetronome(bpm.value.toLong())
             }
             else{
@@ -168,9 +174,7 @@ fun calculateSleepDuration(bpm: Long): Long {
 }
 fun startMetronome(bpm: Long){
     val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
-    if(!MetronomeState){
-        return
-    }
+
     MetronomeState = true
 
     /*timerTask {
@@ -187,6 +191,7 @@ fun startMetronome(bpm: Long){
         },
         0L,
         calculateSleepDuration(bpm)
+
     )
 }
 
