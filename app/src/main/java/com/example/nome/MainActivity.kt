@@ -23,7 +23,10 @@ import kotlin.concurrent.timerTask
 
 var MetronomeState = false
 var metronome: Timer = Timer("metronome", true)
-var lastBpm: Int = 0
+
+
+private const val MIN_BPM = 39
+private const val MAX_BPM = 221
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +57,6 @@ fun MainScreen() {
     var delay = (60.0 / bpm.value * 1000).toLong()
     var mainHandler: Handler
 
-
     //container
     Column (
         modifier = Modifier.padding(20.dp),
@@ -70,7 +72,7 @@ fun MainScreen() {
         //slider
         Slider(
             value = sliderPosition,
-            valueRange = 20f..255f,
+            valueRange = 40f..220f,
             colors = SliderDefaults.colors(
                 thumbColor = Color(0xffE74E35),
                 activeTrackColor = Color(0xFFE2634F),
@@ -80,10 +82,6 @@ fun MainScreen() {
             onValueChange = {
                 sliderPosition = it
                 bpm.value = sliderPosition.toInt()
-                if(MetronomeState){
-                    stopMetronome()
-                    Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
-                }
             }
         )
 
@@ -92,18 +90,26 @@ fun MainScreen() {
             modifier = Modifier.padding(10.dp)
         ) {
             Button(onClick = {
-                bpm.value -= 1
-                sliderPosition = bpm.value.toFloat()
-            }) {
+                if (bpm.value >= MIN_BPM) {
+                    bpm.value -= 1
+                    sliderPosition = bpm.value.toFloat()
+                }
+            },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffE74E35))
+            ) {
                 Text(text = "-1")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
             
             Button(onClick = {
-                bpm.value += 1
-                sliderPosition = bpm.value.toFloat()
-            }) {
+                if (bpm.value <= MAX_BPM) {
+                    bpm.value += 1
+                    sliderPosition = bpm.value.toFloat()
+                }
+            },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffE74E35))
+            ) {
                 Text(text = "+1")
             }
         }
@@ -119,18 +125,26 @@ fun MainScreen() {
             modifier = Modifier.padding(10.dp)
         ) {
             Button(onClick = {
-                bpm.value -= 10
-                sliderPosition = bpm.value.toFloat()
-            }) {
+                if (bpm.value >= MIN_BPM) {
+                    bpm.value -= 10
+                    sliderPosition = bpm.value.toFloat()
+                }
+            },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffE74E35))
+            ) {
                 Text(text = "-10")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
 
             Button(onClick = {
-                bpm.value += 10
-                sliderPosition = bpm.value.toFloat()
-            }) {
+                if (bpm.value <= MAX_BPM) {
+                    bpm.value += 10
+                    sliderPosition = bpm.value.toFloat()
+                }
+            },
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffE74E35))
+            ) {
                 Text(text = "+10")
             }
         }
@@ -143,15 +157,15 @@ fun MainScreen() {
             if(!MetronomeState)
             {
                 MetronomeState = true
-                lastBpm = bpm.value
+
                 startMetronome(bpm.value.toLong())
             }
             else{
                 stopMetronome()
             }
-        }
-        )
-        {
+        },
+            backgroundColor = Color(0xffE74E35)
+        ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = "Start/Stop")
         }
     }
@@ -173,8 +187,10 @@ fun calculateSleepDuration(bpm: Long): Long {
     return (1000 * (60 / bpm.toDouble())).toLong()
 }
 fun startMetronome(bpm: Long){
-    val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
-
+    val metronomeTone = ToneGenerator.TONE_PROP_BEEP
+    if(!MetronomeState){
+        return
+    }
     MetronomeState = true
 
     /*timerTask {
@@ -186,12 +202,11 @@ fun startMetronome(bpm: Long){
     metronome.schedule(
         timerTask {
             val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-            toneGenerator.startTone(MetronomeTone)
+            toneGenerator.startTone(metronomeTone)
             toneGenerator.release()
         },
         0L,
         calculateSleepDuration(bpm)
-
     )
 }
 
