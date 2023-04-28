@@ -1,10 +1,16 @@
 package com.example.nome.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.UUID
-
-data class Preset(
+@Entity(tableName = "presets")
+data class  Preset(
+    @PrimaryKey
     val id: Int,
+    @ColumnInfo
     val name: String,
-    val bpm: Int
+    @ColumnInfo
+    val BPM: Int
 ) {
 }

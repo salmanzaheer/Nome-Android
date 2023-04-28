@@ -62,7 +62,7 @@ fun PresetRow(
                 ) {
                     Text("BPM:", modifier = Modifier.weight(1.0f))
                     Text(
-                        preset.bpm.toString(),
+                        preset.BPM.toString(),
                         modifier = Modifier.weight(2.0f),
                         fontSize = 30.sp,
                         color = MaterialTheme.colors.secondary
