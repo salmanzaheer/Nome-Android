@@ -5,7 +5,7 @@ import com.example.nome.model.Preset
 
 @Dao
 interface PresetsDao{
-    @Query("select id, name, BPM from presets")
+    @Query("select * from presets")
     suspend fun getPresets(): List<Preset>
 
     @Insert

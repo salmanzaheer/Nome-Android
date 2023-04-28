@@ -3,7 +3,8 @@ package com.example.nome.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.UUID
+import java.util.*
+
 @Entity(tableName = "presets")
 data class  Preset(
     @PrimaryKey
