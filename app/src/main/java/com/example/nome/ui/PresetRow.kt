@@ -16,6 +16,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
@@ -31,6 +32,7 @@ fun PresetRow(
     onDelete: (Preset) -> Unit,
     onSelect: KProperty0<State<Preset?>>,
 ) {
+    val context = LocalContext.current
     Log.d("TAG", preset.name)
     Card(
         shape = RoundedCornerShape(5.dp),
@@ -51,14 +53,14 @@ fun PresetRow(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
-                ){
+        ){
             Column(
                 modifier = Modifier.weight(1.5f)
             ) {
                 Row(
                     modifier = Modifier.padding(5.dp),
                     verticalAlignment = Alignment.CenterVertically
-                        ) {
+                ) {
                     Text("Name:", modifier = Modifier.weight(1.0f))
                     Text(preset.name, modifier = Modifier.weight(2.0f), fontSize = 28.sp, color = MaterialTheme.colors.secondary)
                 }
@@ -77,7 +79,7 @@ fun PresetRow(
                 Button({
                     val intent = Intent(Intent.ACTION_VIEW)
                     intent.data = Uri.parse(preset.url)
-                    startActivity(intent)
+                    context.startActivity(intent)
 
                 }){
                     Text("Listen Now!")
