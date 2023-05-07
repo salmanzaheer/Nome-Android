@@ -12,6 +12,8 @@ data class  Preset(
     @ColumnInfo
     val name: String,
     @ColumnInfo
-    val BPM: Int
+    val BPM: Int,
+    @ColumnInfo
+    val url: String
 ) {
 }

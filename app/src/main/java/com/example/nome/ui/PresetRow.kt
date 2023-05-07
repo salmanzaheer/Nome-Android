@@ -1,10 +1,13 @@
 package com.example.nome.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.nome.model.Preset
 import kotlin.reflect.KProperty0
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -67,6 +73,14 @@ fun PresetRow(
                         fontSize = 30.sp,
                         color = MaterialTheme.colors.secondary
                     )
+                }
+                Button({
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(preset.url)
+                    startActivity(intent)
+
+                }){
+                    Text("Listen Now!")
                 }
 
             }
