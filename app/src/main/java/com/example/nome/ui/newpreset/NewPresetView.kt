@@ -30,7 +30,7 @@ import com.example.nome.model.Preset
 @Composable
 fun NewPresetView(
     vm: NewPresetViewModel = viewModel(),
-    onAddPreset: (Preset) -> Unit
+    //onAddPreset: (Preset) -> Unit
 ){
     val ctx = LocalContext.current
 
@@ -92,7 +92,7 @@ fun NewPresetView(
             onClick = {
                 try {
                     val preset = vm.validate()
-                    onAddPreset(preset)
+                   // onAddPreset(preset)
                 } catch (e: Exception) {
                     Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show()
                 }

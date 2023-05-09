@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -40,7 +38,7 @@ fun UserPresetListView(
 ) {
 
     val showAddPresetsScreen =  remember { mutableStateOf(false)}
-    val vm: UserPresetListViewModel = viewModel()
+    val newPresetVm: NewPresetViewModel = viewModel()
 
 
 
@@ -67,13 +65,13 @@ fun UserPresetListView(
                 }
             }
         }
-        val newPresetViewModel: NewPresetViewModel = viewModel()
-        FloatingActionButton(
+        // TODO - navigate to NewPresetView here!!
+        ExtendedFloatingActionButton(
+            text = { Text(text = "Add Preset") },
             onClick = {
 
-            })
-        {
-            Icon(Icons.Filled.Add, contentDescription = "Add Preset")
-        }
+            },
+            icon = { Icon(Icons.Filled.Add, contentDescription = "add preset") }
+        )
     }
 }
