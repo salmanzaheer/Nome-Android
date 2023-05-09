@@ -16,11 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.nome.model.Preset
 import com.example.nome.ui.AddPresetFAB
 import com.example.nome.ui.LandscapeView
 import com.example.nome.ui.PresetRow
 import com.example.nome.ui.confirmDialog.ConfirmViewModel
+import com.example.nome.ui.nav.Routes
 import com.example.nome.ui.newpreset.NewPresetView
 import com.example.nome.ui.newpreset.NewPresetViewModel
 import kotlin.reflect.KProperty0
@@ -34,12 +37,12 @@ fun UserPresetListView(
     confirmViewModel: ConfirmViewModel,
     // TODO - add confirm dialog,
     onDelete: suspend (Preset) -> Unit,
-    onSelectPreset: KProperty0<androidx.compose.runtime.State<Preset?>>
+    onSelectPreset: KProperty0<androidx.compose.runtime.State<Preset?>>,
+    navController: NavController
 ) {
 
     val showAddPresetsScreen =  remember { mutableStateOf(false)}
     val newPresetVm: NewPresetViewModel = viewModel()
-
 
 
     Box(contentAlignment = Alignment.Center){
@@ -69,7 +72,9 @@ fun UserPresetListView(
         ExtendedFloatingActionButton(
             text = { Text(text = "Add Preset") },
             onClick = {
-
+                navController.navigate(Routes.NewPreset.route){
+                    popUpTo(Routes.NewPreset.route)
+                }
             },
             icon = { Icon(Icons.Filled.Add, contentDescription = "add preset") }
         )
