@@ -12,12 +12,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.nome.ui.Body
 import com.example.nome.ui.presetlist.PresetListView
 import com.example.nome.ui.presetlist.PresetListViewModel
+import com.example.nome.ui.presetlist.UserPresetListViewModel
 
 @Composable
 fun PresetsNavGraph(
     navController: NavController = rememberNavController()
 ) {
     val vm: PresetListViewModel = viewModel()
+    val userVm: UserPresetListViewModel = viewModel()
     NavHost(
         navController = navController as NavHostController,
         startDestination = Routes.MainScreen.route
@@ -29,7 +31,7 @@ fun PresetsNavGraph(
             OnlinePresetListScreen(vm = vm)
         }
         composable(Routes.UserPresetScreen.route) {
-            UserPresetListScreen(vm = vm)
+            UserPresetListScreen(vm = userVm)
         }
     }
 }
@@ -37,7 +39,7 @@ fun PresetsNavGraph(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserPresetListScreen(
-    vm: PresetListViewModel
+    vm: UserPresetListViewModel
 ) {
     /*TODO - Confirmation*/
     val presets by vm.presets
@@ -47,7 +49,7 @@ fun UserPresetListScreen(
         presets = presets, 
         selectedPreset = selectedPreset, 
         waiting = vm.waiting.value, 
-        onDelete = {/*TODO - deletePreset function*/}, 
+        onDelete = vm::deletePreset,
         onSelectPreset = vm::selectedPreset)
 }
 
