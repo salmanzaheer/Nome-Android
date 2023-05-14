@@ -3,6 +3,8 @@ package com.example.nome.ui.nav
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -17,6 +19,7 @@ import com.example.nome.ui.presetlist.PresetListView
 import com.example.nome.ui.presetlist.PresetListViewModel
 import com.example.nome.ui.presetlist.UserPresetListView
 import com.example.nome.ui.presetlist.UserPresetListViewModel
+import com.example.nome.ui.theme.globalStateDataClass
 
 @Composable
 fun PresetsNavGraph(
@@ -26,12 +29,17 @@ fun PresetsNavGraph(
     val userVm: UserPresetListViewModel = viewModel()
     val confirmVm: ConfirmViewModel = viewModel()
     val newPresetVm: NewPresetViewModel = viewModel()
+    //Global State vals. Added to fix values from resetting to default mutableStates when changing navs
+    val globalStates = globalStateDataClass(
+        State = false,
+        Slider = 60f,
+        Bpm = 60)
     NavHost(
         navController = navController as NavHostController,
         startDestination = Routes.MainScreen.route
     ) {
         composable(Routes.MainScreen.route) {
-            Body()
+            Body(globalStates)
         }
         composable(Routes.OnlinePresetScreen.route) {
             OnlinePresetListScreen(vm = vm)
@@ -79,10 +87,12 @@ fun UserPresetListScreen(
 fun OnlinePresetListScreen(
     vm: PresetListViewModel
 ) {
+    //Do we need confirmation?
     /*TODO - Confirmation*/
     val presets by vm.presets
     val selectedPreset by vm.selectedPreset
 
+    //Get rid of on delete.
     PresetListView(
         presets = presets,
         selectedPreset = selectedPreset,
