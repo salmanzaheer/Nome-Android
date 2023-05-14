@@ -12,12 +12,19 @@ import androidx.compose.ui.Alignment
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Handler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.ui.theme.NomeTheme
+import kotlinx.coroutines.delay
 import java.util.Timer
 import kotlin.concurrent.timerTask
 
@@ -34,21 +41,48 @@ fun Body() {
     val bpm: MutableState<Int> = remember {
         mutableStateOf(60)
     }
+
+    var isPlaying by remember {
+         mutableStateOf(false)
+    }
     var delay = (60.0 / bpm.value * 1000).toLong()
     var mainHandler: Handler
 
 
     //container
     Column (
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
+
     ){
         // Active Indicator
-
-        // 4 objects to show beat
-        Row () {
-
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(if (!isPlaying) Color.Gray else Color.Red)
+            ) {
+            }
         }
+
+        Spacer(modifier = Modifier.height(60.dp))
+
+
+        // display BPM
+        Text(
+            text = bpm.value.toString(),
+            fontSize = 100.sp,
+            style = MaterialTheme.typography.h1
+        )
+
+        Spacer(modifier = Modifier.height(50.dp))
+
 
         //slider
         Slider(
@@ -70,125 +104,181 @@ fun Body() {
             }
         )
 
+        Spacer(modifier = Modifier.height(20.dp))
+
         // buttons +-1 bpm
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Button(onClick = {
-                if(bpm.value > 20){
-                    bpm.value -= 1
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+            Button(
+                modifier = Modifier.size(80.dp),
+                onClick = {
+                    if(bpm.value > 20){
+                        bpm.value -= 1
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
                     }
-                }
-            }) {
+                },
+                shape = CircleShape
+            ) {
                 Text(text = "-1")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
 
-            Button(onClick = {
-                if(bpm.value < 254){
-                    bpm.value += 1
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+            Button(
+                modifier = Modifier.size(80.dp),
+                onClick = {
+                    if(bpm.value < 254){
+                        bpm.value += 1
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
                     }
-                }
-            }) {
+                },
+                shape = CircleShape
+            ) {
                 Text(text = "+1")
             }
         }
 
-        // display BPM
-        Text(
-            text = bpm.value.toString(),
-            fontSize = 36.sp,
+
+        // FAB for play/stop
+        //onclick play media works.
+        FloatingActionButton(
+            onClick = {
+                isPlaying = !isPlaying
+                if(!MetronomeState)
+                {
+                    MetronomeState = true
+                    lastBpm = bpm.value
+                    startMetronome(bpm.value.toLong())
+                }
+                else{
+                    stopMetronome()
+                }
+            },
+            backgroundColor = if (!isPlaying) Color.Green else Color.Red
         )
+        {
+            Icon(
+                if (!isPlaying) Icons.Filled.PlayArrow else Icons.Filled.Close,
+                contentDescription = if (!isPlaying) "Pause" else "Play",
+                tint = Color.White
+            )
+        }
+
 
         // buttons +-10 bpm
         Row(
             modifier = Modifier.padding(10.dp)
         ) {
-            Button(onClick = {
-                if(bpm.value > 31){
-                    bpm.value -= 10
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+            Button(
+                modifier = Modifier.size(80.dp),
+                onClick = {
+                    if(bpm.value > 31){
+                        bpm.value -= 10
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
+                    } else if(bpm.value < 31 && bpm.value != 20) {
+                        bpm.value = 20
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
                     }
-                } else if(bpm.value < 31 && bpm.value != 20) {
-                    bpm.value = 20
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
-                    }
-                }
-            }) {
+                },
+                shape = CircleShape
+            ) {
                 Text(text = "-10")
             }
 
             Spacer(modifier = Modifier.width(180.dp))
 
-            Button(onClick = {
-                if(bpm.value < 244){
-                    bpm.value += 10
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+            Button(
+                modifier = Modifier.size(80.dp),
+                onClick = {
+                    if(bpm.value < 244){
+                        bpm.value += 10
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
+                    } else if(bpm.value > 244 && bpm.value != 255) {
+                        bpm.value = 255
+                        sliderPosition = bpm.value.toFloat()
+                        if(MetronomeState){
+                            stopMetronome()
+                            Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
+                        }
                     }
-                } else if(bpm.value > 244 && bpm.value != 255) {
-                    bpm.value = 255
-                    sliderPosition = bpm.value.toFloat()
-                    if(MetronomeState){
-                        stopMetronome()
-                        Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
-                    }
-                }
-            }) {
+                },
+                shape = CircleShape
+            ) {
                 Text(text = "+10")
             }
         }
 
         //Need a handler to run metronome in seperate thread
 
-        // FAB for play/stop
-        //onclick play media works.
-        FloatingActionButton(onClick = {
-            if(!MetronomeState)
-            {
-                MetronomeState = true
-                lastBpm = bpm.value
-                startMetronome(bpm.value.toLong())
-            }
-            else{
-                stopMetronome()
-            }
-        }
-        )
-        {
-            Icon(Icons.Filled.PlayArrow, contentDescription = "Start/Stop")
-        }
+
     }
 }
 
-/*fun playSound(ctx:Context, bpm: Int){
-    val beats = 10
-    val mMediaPlayer = MediaPlayer.create(ctx, R.raw.metornome)
-    val delay = (60.0 / bpm * 1000).toLong()
-    var count = 0
-    while(count < beats) {
-        mMediaPlayer.start()
-        Thread.sleep(delay)
-        count++
+@Composable
+fun TickAnimation(bpm: Int) {
+    var backgroundColor by remember { mutableStateOf(Color.Gray)}
+    var tickCount by remember {
+        mutableStateOf(0)
     }
-}*/
+    var isPlaying by remember { mutableStateOf(true)}
+    var totalTicks by remember { mutableStateOf(0)}
+    var tickDuration by remember {
+        mutableStateOf(0)
+    }
+
+    LaunchedEffect(isPlaying) {
+        totalTicks = (60 * 1000 / bpm).toInt()
+        tickDuration = totalTicks / 2
+
+        while (isPlaying) {
+            tickCount++
+            if (tickCount % tickDuration == 0) {
+                backgroundColor = if (backgroundColor == Color.Gray) Color.Green else Color.Gray
+            }
+            if (tickCount >= totalTicks) {
+                tickCount = 0
+            }
+            delay(1)
+        }
+
+    }
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .clip(CircleShape)
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "${tickCount * 60 / totalTicks}",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+
 //CHANGE BPM TO WORK WITH SLIDER SET TO 60 RN
 fun calculateSleepDuration(bpm: Long): Long {
     return (1000 * (60 / bpm.toDouble())).toLong()

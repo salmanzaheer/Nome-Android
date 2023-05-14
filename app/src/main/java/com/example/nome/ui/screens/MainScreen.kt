@@ -85,7 +85,7 @@ fun BottomBar (
                 Icon(Icons.Default.Home, contentDescription = "")
             },
             label = {
-                Text("Home")
+                Text("Home1")
             }
         )
         // user presets

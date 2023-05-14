@@ -19,16 +19,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.model.Preset
+import com.example.nome.model.UserPreset
 import kotlin.reflect.KProperty0
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PresetRow(
+fun UserPresetRow(
     idx: Int,
-    preset: Preset,
-    onDelete: (Preset) -> Unit,
-    onSelect: KProperty0<State<Preset?>>,
+    preset: UserPreset,
+    onDelete: (UserPreset) -> Unit,
+    onSelect: KProperty0<State<UserPreset?>>,
 ) {
     val context = LocalContext.current
     Log.d("TAG", preset.name)
@@ -74,15 +75,6 @@ fun PresetRow(
                         color = MaterialTheme.colors.secondary
                     )
                 }
-                Button({
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(preset.url)
-                    context.startActivity(intent)
-
-                }){
-                    Text("Listen Now!")
-                }
-
             }
         }
 
