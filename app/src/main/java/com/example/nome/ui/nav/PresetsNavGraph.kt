@@ -40,7 +40,13 @@ fun PresetsNavGraph(
             UserPresetListScreen(vm = userVm, confirmVm, navController)
         }
         composable(Routes.NewPreset.route){
-            NewPresetView()
+            NewPresetView(
+                newPresetVm,
+                navController,
+                onAddPreset = {preset->
+                    userVm.addPreset(preset)
+                }
+            )
         }
     }
 }
@@ -56,16 +62,16 @@ fun UserPresetListScreen(
     navController: NavController
 ) {
     /*TODO - Confirmation*/
-    val presets by vm.presets
+    val userPresets by vm.userPresets
     val selectedPreset by vm.selectedPreset
     
     UserPresetListView(
-        presets = presets, 
+        presets = userPresets,
         selectedPreset = selectedPreset,
-        cvm,
+        confirmViewModel = cvm,
         onDelete = vm::deletePreset,
         onSelectPreset = vm::selectedPreset,
-        navController)
+        navController = navController)
 }
 
 @OptIn(ExperimentalFoundationApi::class)

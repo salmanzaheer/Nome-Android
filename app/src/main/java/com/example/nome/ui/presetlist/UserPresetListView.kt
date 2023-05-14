@@ -23,9 +23,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.nome.model.Preset
+import com.example.nome.model.UserPreset
 import com.example.nome.ui.AddPresetFAB
 import com.example.nome.ui.LandscapeView
 import com.example.nome.ui.PresetRow
+import com.example.nome.ui.UserPresetRow
 import com.example.nome.ui.confirmDialog.ConfirmViewModel
 import com.example.nome.ui.nav.Routes
 import com.example.nome.ui.newpreset.NewPresetView
@@ -36,12 +38,12 @@ import kotlin.reflect.KProperty0
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserPresetListView(
-    presets: List<Preset>,
-    selectedPreset: Preset?,
+    presets: List<UserPreset>,
+    selectedPreset: UserPreset?,
     confirmViewModel: ConfirmViewModel,
     // TODO - add confirm dialog,
-    onDelete: suspend (Preset) -> Unit,
-    onSelectPreset: KProperty0<androidx.compose.runtime.State<Preset?>>,
+    onDelete: suspend (UserPreset) -> Unit,
+    onSelectPreset: KProperty0<androidx.compose.runtime.State<UserPreset?>>,
     navController: NavController
 ) {
 
@@ -61,7 +63,7 @@ fun UserPresetListView(
                 if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
                     LazyColumn{
                         itemsIndexed(presets){idx, preset ->
-                            PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+                            UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
                         }
                     }
 
@@ -69,7 +71,7 @@ fun UserPresetListView(
                     LandscapeView(selectedPreset?.name) {
                         LazyColumn{
                             itemsIndexed(presets){idx, preset ->
-                                PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+                                UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
                             }
                         }
                     }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.nome.model.Preset
+import com.example.nome.model.UserPreset
 
 
 class NewPresetViewModel: ViewModel() {
@@ -21,7 +22,7 @@ class NewPresetViewModel: ViewModel() {
         _bpm.value = bpm
     }
 
-    fun validate(): Preset {
+    fun validate(): UserPreset {
         if (name.value.isEmpty()){
             throw Exception("Preset name required")
         }
@@ -29,11 +30,9 @@ class NewPresetViewModel: ViewModel() {
             throw Exception("Preset BPM required")
         }
         val presetBPM = bpm.value.toIntOrNull() ?: throw Exception("BPM must be Int")
-        return Preset(
-            id = 1,
+        return UserPreset(
             name = name.value,
-            BPM = presetBPM,
-            url = ""
+            BPM = presetBPM
         )
     }
 }
