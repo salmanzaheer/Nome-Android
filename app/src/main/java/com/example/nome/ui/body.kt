@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.ui.theme.NomeTheme
+import com.example.nome.ui.theme.globalStateDataClass
 import kotlinx.coroutines.delay
 import java.util.Timer
 import kotlin.concurrent.timerTask
@@ -33,18 +34,21 @@ var metronome: Timer = Timer("metronome", true)
 var lastBpm: Int = 0
 
 @Composable
-fun Body() {
+fun Body(globalStates: globalStateDataClass) {
     //gets local context bc mediaplayer has two parameters which is context and audio
     var sliderPosition by remember {
-        mutableStateOf(60f)
+        mutableStateOf(globalStates.Slider) //calls by globalStates object values
     }
     val bpm: MutableState<Int> = remember {
-        mutableStateOf(60)
+        mutableStateOf(globalStates.Bpm) //calls by globalStates object values
     }
 
     var isPlaying by remember {
-         mutableStateOf(false)
+         mutableStateOf(globalStates.State) //calls by globalStates object values
     }
+
+    // Added a lot of update lines so globalStates will keep up and wont reset to default when going to new other screen.
+
     var delay = (60.0 / bpm.value * 1000).toLong()
     var mainHandler: Handler
 
@@ -63,28 +67,30 @@ fun Body() {
         ) {
             Box(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .size(50.dp)
+                    .padding(5.dp)
+                    .size(25.dp)
                     .clip(CircleShape)
                     .background(if (!isPlaying) Color.Gray else Color.Red)
             ) {
             }
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
 
         // display BPM
         Text(
-            text = bpm.value.toString(),
-            fontSize = 100.sp,
+            text = globalStates.Bpm.toString(),
+            //text = bpm.value.toString(),
+            fontSize = 80.sp,
             style = MaterialTheme.typography.h1
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
 
         //slider
+        //Fix slider to work with globalStateDataClass Observer
         Slider(
             value = sliderPosition,
             valueRange = 20f..255f,
@@ -97,6 +103,8 @@ fun Body() {
             onValueChange = {
                 sliderPosition = it
                 bpm.value = sliderPosition.toInt()
+                globalStates.Bpm = bpm.value
+                globalStates.Slider = sliderPosition
                 if(MetronomeState){
                     stopMetronome()
                     Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
@@ -104,7 +112,7 @@ fun Body() {
             }
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // buttons +-1 bpm
         Row(
@@ -115,7 +123,9 @@ fun Body() {
                 onClick = {
                     if(bpm.value > 20){
                         bpm.value -= 1
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
@@ -134,7 +144,9 @@ fun Body() {
                 onClick = {
                     if(bpm.value < 254){
                         bpm.value += 1
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
@@ -153,6 +165,7 @@ fun Body() {
         FloatingActionButton(
             onClick = {
                 isPlaying = !isPlaying
+                globalStates.State = isPlaying
                 if(!MetronomeState)
                 {
                     MetronomeState = true
@@ -183,14 +196,18 @@ fun Body() {
                 onClick = {
                     if(bpm.value > 31){
                         bpm.value -= 10
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     } else if(bpm.value < 31 && bpm.value != 20) {
                         bpm.value = 20
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
@@ -209,14 +226,18 @@ fun Body() {
                 onClick = {
                     if(bpm.value < 244){
                         bpm.value += 10
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     } else if(bpm.value > 244 && bpm.value != 255) {
                         bpm.value = 255
+                        globalStates.Bpm = bpm.value
                         sliderPosition = bpm.value.toFloat()
+                        globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
