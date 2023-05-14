@@ -23,13 +23,23 @@ class NewPresetViewModel: ViewModel() {
     }
 
     fun validate(): UserPreset {
+        // check if name field empty
         if (name.value.isEmpty()){
             throw Exception("Preset name required")
         }
+        // check if bpm field empty
         if(bpm.value.isEmpty()){
             throw Exception("Preset BPM required")
         }
+
+
+
         val presetBPM = bpm.value.toIntOrNull() ?: throw Exception("BPM must be Int")
+
+        // check bpm range
+        if (presetBPM < 20 || presetBPM > 255){
+            throw Exception("BPM value outside of range")
+        }
         return UserPreset(
             name = name.value,
             BPM = presetBPM

@@ -27,10 +27,10 @@ class UserPresetListViewModel(app: Application) : AndroidViewModel(app){
     private val _presetFetcher = PresetsFetcher(getApplication())
 
     init {
-        _repository = UserPresetsMemoryRepository(listOf())
         viewModelScope.launch {
             _waiting.value = true
             val presets = _presetFetcher.fetchPresets()
+            _repository = UserPresetDatabaseRepository(app = getApplication())
             _userPresets.value = _repository.getPresets()
             _waiting.value = false
         }
@@ -41,6 +41,7 @@ class UserPresetListViewModel(app: Application) : AndroidViewModel(app){
     fun addPreset(userPreset: UserPreset){
         viewModelScope.launch {
             _repository.addPreset(userPreset)
+            _userPresets.value = _repository.getPresets()
         }
     }
 

@@ -51,7 +51,7 @@ fun UserPresetListView(
     val newPresetVm: NewPresetViewModel = viewModel()
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(contentAlignment = Alignment.Center){
