@@ -7,10 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -23,7 +20,7 @@ import com.example.nome.ui.theme.globalStateDataClass
 import kotlin.reflect.KProperty0
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun PresetRow(
     idx: Int,
@@ -90,7 +87,8 @@ fun PresetRow(
                     }
                     Button(
                         onClick = {
-                            globalState.Bpm = preset.BPM },
+                            globalState.Bpm = preset.BPM
+                                  globalState.Slider = preset.BPM.toFloat()},
                         Modifier.padding(16.dp)
                     ){
                         Text("Set Bpm")

@@ -42,8 +42,8 @@ fun UserPresetListView(
     // TODO - add confirm dialog,
     onDelete: suspend (UserPreset) -> Unit,
     onSelectPreset: KProperty0<androidx.compose.runtime.State<UserPreset?>>,
-    navController: NavController
-
+    navController: NavController,
+    globalState: globalStateDataClass
 ) {
 
     val showAddPresetsScreen =  remember { mutableStateOf(false)}
@@ -62,7 +62,7 @@ fun UserPresetListView(
                 if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
                     LazyColumn{
                         itemsIndexed(presets){idx, preset ->
-                            UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+                            UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
                         }
                     }
 
@@ -70,7 +70,7 @@ fun UserPresetListView(
                     LandscapeView(selectedPreset?.name) {
                         LazyColumn{
                             itemsIndexed(presets){idx, preset ->
-                                UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+                                UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
 
                             }
                         }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.model.Preset
 import com.example.nome.model.UserPreset
+import com.example.nome.ui.theme.globalStateDataClass
 import kotlin.reflect.KProperty0
 
 
@@ -30,6 +31,7 @@ fun UserPresetRow(
     preset: UserPreset,
     onDelete: (UserPreset) -> Unit,
     onSelect: KProperty0<State<UserPreset?>>,
+    globalState :globalStateDataClass
 ) {
     val context = LocalContext.current
     Log.d("TAG", preset.name)
@@ -74,6 +76,14 @@ fun UserPresetRow(
                         fontSize = 30.sp,
                         color = MaterialTheme.colors.secondary
                     )
+                }
+                Button(
+                    onClick = {
+                        globalState.Bpm = preset.BPM
+                        globalState.Slider = preset.BPM.toFloat()},
+                    Modifier.padding(16.dp)
+                ){
+                    Text("Set Bpm")
                 }
             }
         }
