@@ -80,12 +80,8 @@ fun UserPresetListScreen(
         confirmViewModel = cvm,
         onDelete = vm::deletePreset,
         onSelectPreset = vm::selectedPreset,
-<<<<<<< HEAD
-        navController,
-        globalState)
-=======
         navController = navController)
->>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)

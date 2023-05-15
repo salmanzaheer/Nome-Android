@@ -40,16 +40,10 @@ fun UserPresetListView(
     selectedPreset: UserPreset?,
     confirmViewModel: ConfirmViewModel,
     // TODO - add confirm dialog,
-<<<<<<< HEAD
-    onDelete: suspend (Preset) -> Unit,
-    onSelectPreset: KProperty0<androidx.compose.runtime.State<Preset?>>,
-    navController: NavController,
-    globalState: globalStateDataClass
-=======
     onDelete: suspend (UserPreset) -> Unit,
     onSelectPreset: KProperty0<androidx.compose.runtime.State<UserPreset?>>,
     navController: NavController
->>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
+
 ) {
 
     val showAddPresetsScreen =  remember { mutableStateOf(false)}
@@ -68,11 +62,7 @@ fun UserPresetListView(
                 if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
                     LazyColumn{
                         itemsIndexed(presets){idx, preset ->
-<<<<<<< HEAD
-                            PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
-=======
                             UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
->>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
                         }
                     }
 
@@ -80,11 +70,8 @@ fun UserPresetListView(
                     LandscapeView(selectedPreset?.name) {
                         LazyColumn{
                             itemsIndexed(presets){idx, preset ->
-<<<<<<< HEAD
-                                PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
-=======
                                 UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
->>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
+
                             }
                         }
                     }
