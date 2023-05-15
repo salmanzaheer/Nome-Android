@@ -23,9 +23,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.nome.model.Preset
+import com.example.nome.model.UserPreset
 import com.example.nome.ui.AddPresetFAB
 import com.example.nome.ui.LandscapeView
 import com.example.nome.ui.PresetRow
+import com.example.nome.ui.UserPresetRow
 import com.example.nome.ui.confirmDialog.ConfirmViewModel
 import com.example.nome.ui.nav.Routes
 import com.example.nome.ui.newpreset.NewPresetView
@@ -37,21 +39,27 @@ import kotlin.reflect.KProperty0
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserPresetListView(
-    presets: List<Preset>,
-    selectedPreset: Preset?,
+    presets: List<UserPreset>,
+    selectedPreset: UserPreset?,
     confirmViewModel: ConfirmViewModel,
     // TODO - add confirm dialog,
+<<<<<<< HEAD
     onDelete: suspend (Preset) -> Unit,
     onSelectPreset: KProperty0<androidx.compose.runtime.State<Preset?>>,
     navController: NavController,
     globalState: globalStateDataClass
+=======
+    onDelete: suspend (UserPreset) -> Unit,
+    onSelectPreset: KProperty0<androidx.compose.runtime.State<UserPreset?>>,
+    navController: NavController
+>>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
 ) {
 
     val showAddPresetsScreen =  remember { mutableStateOf(false)}
     val newPresetVm: NewPresetViewModel = viewModel()
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(contentAlignment = Alignment.Center){
@@ -63,7 +71,11 @@ fun UserPresetListView(
                 if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
                     LazyColumn{
                         itemsIndexed(presets){idx, preset ->
+<<<<<<< HEAD
                             PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
+=======
+                            UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+>>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
                         }
                     }
 
@@ -71,7 +83,11 @@ fun UserPresetListView(
                     LandscapeView(selectedPreset?.name) {
                         LazyColumn{
                             itemsIndexed(presets){idx, preset ->
+<<<<<<< HEAD
                                 PresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
+=======
+                                UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset)
+>>>>>>> 8fce1ec768c2c4d81882d4f1e671aebe2edf8124
                             }
                         }
                     }

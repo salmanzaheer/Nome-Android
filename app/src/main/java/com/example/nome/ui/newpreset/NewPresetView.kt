@@ -24,13 +24,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.nome.model.Preset
+import com.example.nome.model.UserPreset
+import com.example.nome.ui.nav.Routes
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun NewPresetView(
     vm: NewPresetViewModel = viewModel(),
-    //onAddPreset: (Preset) -> Unit
+    navController: NavController,
+    onAddPreset: (UserPreset) -> Unit
 ){
     val ctx = LocalContext.current
 
@@ -91,10 +95,14 @@ fun NewPresetView(
         Button(
             onClick = {
                 try {
-                    val preset = vm.validate()
-                   // onAddPreset(preset)
+                    val preset: UserPreset = vm.validate()
+                    onAddPreset(preset)
                 } catch (e: Exception) {
                     Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+                navController.navigate(Routes.UserPresetScreen.route){
+                    popUpTo(Routes.UserPresetScreen.route)
                 }
             }
         ) {
