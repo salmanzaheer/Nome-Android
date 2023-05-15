@@ -53,41 +53,49 @@ fun UserPresetListView(
         modifier = Modifier.padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(contentAlignment = Alignment.Center){
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                val config = LocalConfiguration.current
-                if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    LazyColumn{
-                        itemsIndexed(presets){idx, preset ->
-                            UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
-                        }
-                    }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 70.dp),
+            contentAlignment = Alignment.BottomEnd,
 
-                } else {
-                    LandscapeView(selectedPreset?.name) {
+        ){
+            Box(contentAlignment = Alignment.Center){
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val config = LocalConfiguration.current
+                    if(config.orientation == Configuration.ORIENTATION_PORTRAIT){
                         LazyColumn{
                             itemsIndexed(presets){idx, preset ->
                                 UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
+                            }
+                        }
 
+                    } else {
+                        LandscapeView(selectedPreset?.name) {
+                            LazyColumn{
+                                itemsIndexed(presets){idx, preset ->
+                                    UserPresetRow(idx = idx, preset = preset, { idx -> confirmViewModel.showConfirmDelete(onConfirm = {onDelete(preset)})}, onSelect = onSelectPreset,globalState)
+
+                                }
                             }
                         }
                     }
                 }
             }
+            ExtendedFloatingActionButton(
+                text = { Text(text = "Add Preset") },
+                onClick = {
+                    navController.navigate(Routes.NewPreset.route){
+                        popUpTo(Routes.NewPreset.route)
+                    }
+                },
+                backgroundColor = Color(0xffE74E35),
+                elevation = FloatingActionButtonDefaults.elevation(),
+                icon = { Icon(Icons.Filled.Add, contentDescription = "add preset") }
+            )
         }
-        ExtendedFloatingActionButton(
-            text = { Text(text = "Add Preset") },
-            onClick = {
-                navController.navigate(Routes.NewPreset.route){
-                    popUpTo(Routes.NewPreset.route)
-                }
-            },
-            backgroundColor = Color(0xffE74E35),
-            elevation = FloatingActionButtonDefaults.elevation(),
-            icon = { Icon(Icons.Filled.Add, contentDescription = "add preset") }
-        )
     }
 }

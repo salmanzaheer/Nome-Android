@@ -123,7 +123,7 @@ fun Body(globalStates: globalStateDataClass) {
             }
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(60.dp))
 
         // buttons +-1 bpm
         Row(
@@ -146,7 +146,7 @@ fun Body(globalStates: globalStateDataClass) {
                 },
                 shape = CircleShape
             ) {
-                Text(text = "-1")
+                Text(text = "-1", fontSize = 20.sp)
             }
 
             Spacer(modifier = Modifier.width(180.dp))
@@ -166,9 +166,12 @@ fun Body(globalStates: globalStateDataClass) {
                         }
                     }
                 },
-                shape = CircleShape
+                shape = CircleShape,
             ) {
-                Text(text = "+1")
+                Text(
+                    text = "+1",
+                    fontSize = 20.sp
+                )
             }
         }
 
@@ -176,6 +179,7 @@ fun Body(globalStates: globalStateDataClass) {
         // FAB for play/stop
         //onclick play media works.
         FloatingActionButton(
+            modifier = Modifier.size(100.dp),
             onClick = {
                 isPlaying = !isPlaying
                 globalStates.State = isPlaying
@@ -200,7 +204,8 @@ fun Body(globalStates: globalStateDataClass) {
             Icon(
                 if (!isPlaying) Icons.Filled.PlayArrow else Icons.Filled.Close,
                 contentDescription = if (!isPlaying) "Pause" else "Play",
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(50.dp)
             )
         }
 
@@ -236,7 +241,7 @@ fun Body(globalStates: globalStateDataClass) {
                 },
                 shape = CircleShape
             ) {
-                Text(text = "-10")
+                Text(text = "-10", fontSize = 20.sp)
             }
 
             Spacer(modifier = Modifier.width(180.dp))
@@ -268,7 +273,7 @@ fun Body(globalStates: globalStateDataClass) {
                 },
                 shape = CircleShape
             ) {
-                Text(text = "+10")
+                Text(text = "+10", fontSize = 20.sp)
             }
         }
 
