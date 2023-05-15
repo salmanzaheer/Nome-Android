@@ -81,9 +81,6 @@ fun PresetRow(
                 ){
                     Button({
                         onlinePresetDialog.showConfirmationDialog(preset.url)
-                      /*  val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(preset.url)
-                        context.startActivity(intent)*/
                     }){
                         Text("Listen Now!")
                     }

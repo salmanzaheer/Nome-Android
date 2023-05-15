@@ -92,7 +92,6 @@ fun Body(globalStates: globalStateDataClass) {
         // display BPM
         Text(
             text = globalStates.Bpm.toString(),
-            //text = bpm.value.toString(),
             fontSize = 80.sp,
             style = MaterialTheme.typography.h1
         )
@@ -335,13 +334,6 @@ fun startMetronome(bpm: Long){
     val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
 
     MetronomeState = true
-
-
-    /*timerTask {
-        val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-        toneGenerator.startTone(MetronomeTone)
-        toneGenerator.release()
-    }*/
 
     metronome.schedule(
         timerTask {
