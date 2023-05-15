@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.model.Preset
+import com.example.nome.ui.theme.globalStateDataClass
 import kotlin.reflect.KProperty0
 
 
@@ -29,6 +30,7 @@ fun PresetRow(
     preset: Preset,
     onDelete: (Preset) -> Unit,
     onSelect: KProperty0<State<Preset?>>,
+    globalState: globalStateDataClass
 ) {
     val context = LocalContext.current
     Log.d("TAG", preset.name)
@@ -74,14 +76,27 @@ fun PresetRow(
                         color = MaterialTheme.colors.secondary
                     )
                 }
-                Button({
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(preset.url)
-                    context.startActivity(intent)
+                Row(
+                    modifier = Modifier.padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Button({
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(preset.url)
+                        context.startActivity(intent)
 
-                }){
-                    Text("Listen Now!")
+                    }){
+                        Text("Listen Now!")
+                    }
+                    Button(
+                        onClick = {
+                            globalState.Bpm = preset.BPM },
+                        Modifier.padding(16.dp)
+                    ){
+                        Text("Set Bpm")
+                    }
                 }
+
 
             }
         }

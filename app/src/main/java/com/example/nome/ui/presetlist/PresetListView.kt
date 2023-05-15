@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import com.example.nome.model.Preset
 import com.example.nome.ui.LandscapeView
 import com.example.nome.ui.PresetRow
+import com.example.nome.ui.theme.globalStateDataClass
 import kotlin.reflect.KProperty0
 
 @ExperimentalFoundationApi
@@ -25,7 +26,8 @@ fun PresetListView(
     // TODO - add confirmviewmodel (or just confirm dialog),
     waiting: Boolean,
     onDelete: suspend (Preset) -> Unit,
-    onSelectPreset: KProperty0<State<Preset?>>
+    onSelectPreset: KProperty0<State<Preset?>>,
+    globalState: globalStateDataClass
 ) {
     Box(
         contentAlignment = Alignment.Center
@@ -42,7 +44,7 @@ fun PresetListView(
                 } else {
                     LazyColumn{
                         itemsIndexed(presets) { idx, preset ->
-                            PresetRow(idx = idx, preset = preset, onDelete = { /*TODO onConfirm*/}, onSelect = onSelectPreset)
+                            PresetRow(idx = idx, preset = preset, onDelete = { /*TODO onConfirm*/}, onSelect = onSelectPreset, globalState)
 
                         }
                     }
@@ -51,7 +53,7 @@ fun PresetListView(
                 LandscapeView(selectedPreset?.name){
                     LazyColumn{
                         itemsIndexed(presets){idx, preset ->
-                            PresetRow(idx = idx, preset = preset, onDelete = {/*TODO onConfirm*/}, onSelect = onSelectPreset)
+                            PresetRow(idx = idx, preset = preset, onDelete = {/*TODO onConfirm*/}, onSelect = onSelectPreset,globalState)
                         }
                     }
                 }
