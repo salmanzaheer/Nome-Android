@@ -123,7 +123,7 @@ fun Body(globalStates: globalStateDataClass) {
             }
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // buttons +-1 bpm
         Row(

@@ -39,7 +39,6 @@ fun UserPresetListView(
     presets: List<UserPreset>,
     selectedPreset: UserPreset?,
     confirmViewModel: ConfirmViewModel,
-    // TODO - add confirm dialog,
     onDelete: suspend (UserPreset) -> Unit,
     onSelectPreset: KProperty0<androidx.compose.runtime.State<UserPreset?>>,
     navController: NavController,

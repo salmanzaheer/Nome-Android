@@ -70,7 +70,7 @@ fun UserPresetListScreen(
     navController: NavController,
     globalState: globalStateDataClass
 ) {
-    /*TODO - Confirmation*/
+
     val userPresets by vm.userPresets
     val selectedPreset by vm.selectedPreset
     
@@ -91,8 +91,7 @@ fun OnlinePresetListScreen(
     vm: PresetListViewModel,
     globalState: globalStateDataClass
 ) {
-    //Do we need confirmation?
-    /*TODO - Confirmation*/
+
     val presets by vm.presets
     val selectedPreset by vm.selectedPreset
 
