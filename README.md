@@ -1,7 +1,3 @@
-[![Nome-logos.jpg](https://i.postimg.cc/WzRh5BqD/Nome-logos.jpg)](https://postimg.cc/BLgS6wgs)
-
-
-
 # NOME
 
 This is a simple metronome application for Android built using Jetpack Compose. The application provides a clean and easy-to-use interface for controlling the tempo of a musical piece. This app allows users to save their own presets as well as access a list of online presets.
@@ -37,3 +33,13 @@ To use the metronome application:
 ## About us
 
 Our group consists of Christopher Biekeu, Noah Villanueva & Salman Zaheer
+
+## References
+
+- ToneGenerator: https://developer.android.com/reference/android/media/ToneGenerator
+- TimerTask: https://developer.android.com/reference/java/util/TimerTask
+- Online database for app: https://my-json-server.typicode.com/shangnang/TowsonNvilla4/online_database
+
+
+
+[![Nome-logos.jpg](https://i.postimg.cc/WzRh5BqD/Nome-logos.jpg)](https://postimg.cc/BLgS6wgs)
