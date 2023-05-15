@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nome.model.Preset
+import com.example.nome.ui.dialogue.OnlinePresetDialog
 import com.example.nome.ui.theme.globalStateDataClass
 import kotlin.reflect.KProperty0
 
@@ -30,6 +31,7 @@ fun PresetRow(
     globalState: globalStateDataClass
 ) {
     val context = LocalContext.current
+    val onlinePresetDialog = OnlinePresetDialog(context = context)
     Log.d("TAG", preset.name)
     Card(
         shape = RoundedCornerShape(5.dp),
@@ -78,10 +80,10 @@ fun PresetRow(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Button({
-                        val intent = Intent(Intent.ACTION_VIEW)
+                        onlinePresetDialog.showConfirmationDialog(preset.url)
+                      /*  val intent = Intent(Intent.ACTION_VIEW)
                         intent.data = Uri.parse(preset.url)
-                        context.startActivity(intent)
-
+                        context.startActivity(intent)*/
                     }){
                         Text("Listen Now!")
                     }

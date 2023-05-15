@@ -1,5 +1,6 @@
 package com.example.nome.ui.notification
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -35,14 +36,15 @@ class Notification(private val context: Context) {
         isPlaying = !isPlaying
         val notificationMessage = if (isPlaying) "Nome app audio playing" else "audio stopped"
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-            //.setSmallIcon(R.drawable.ic_play_arrow)
-            .setContentTitle("Audio Player")
+            .setSmallIcon(androidx.core.R.drawable.notification_action_background)
+            .setContentTitle("Nome")
             .setContentText(notificationMessage)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
     }
+
 
 }
 

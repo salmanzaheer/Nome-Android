@@ -1,5 +1,8 @@
 package com.example.nome.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,18 +14,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import android.media.AudioManager
 import android.media.ToneGenerator
+import android.os.Build
 import android.os.Handler
+import android.provider.Settings.Global.getString
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
+import com.example.nome.R
+import com.example.nome.ui.dialogue.OnlinePresetDialog
+import com.example.nome.ui.notification.Notification
 import com.example.nome.ui.theme.NomeTheme
 import com.example.nome.ui.theme.globalStateDataClass
 import kotlinx.coroutines.delay
@@ -35,6 +45,7 @@ var lastBpm: Int = 0
 
 @Composable
 fun Body(globalStates: globalStateDataClass) {
+    val service = Notification(context = LocalContext.current)
     //gets local context bc mediaplayer has two parameters which is context and audio
     var sliderPosition by remember {
         mutableStateOf(globalStates.Slider) //calls by globalStates object values
@@ -175,6 +186,8 @@ fun Body(globalStates: globalStateDataClass) {
                     lastBpm = bpm.value
                     startMetronome(bpm.value.toLong())
                     globalStates.State = MetronomeState
+                    isPlaying = globalStates.State
+                    service.showNotification()
                 }
                 else{
                     stopMetronome()
@@ -348,3 +361,5 @@ fun newBpm(){
         metronome = Timer("metronome", true)
     }
 }
+
+
