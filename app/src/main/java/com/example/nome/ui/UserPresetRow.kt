@@ -44,7 +44,7 @@ fun UserPresetRow(
             modifier = Modifier
                 .combinedClickable(
                     onLongClick = {
-                        onDelete(preset)
+
                     }
                 ) {
                     //onSelect(preset)

@@ -2,10 +2,7 @@ package com.example.nome.ui.presetlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
@@ -51,7 +48,7 @@ fun UserPresetListView(
     val newPresetVm: NewPresetViewModel = viewModel()
 
     Column(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(contentAlignment = Alignment.Center){
@@ -86,6 +83,7 @@ fun UserPresetListView(
                 }
             },
             backgroundColor = Color(0xffE74E35),
+            elevation = FloatingActionButtonDefaults.elevation(),
             icon = { Icon(Icons.Filled.Add, contentDescription = "add preset") }
         )
     }
