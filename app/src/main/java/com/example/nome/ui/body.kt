@@ -128,6 +128,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     }
@@ -149,6 +150,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     }
@@ -169,11 +171,14 @@ fun Body(globalStates: globalStateDataClass) {
                 if(!MetronomeState)
                 {
                     MetronomeState = true
+                    globalStates.State = MetronomeState
                     lastBpm = bpm.value
                     startMetronome(bpm.value.toLong())
+                    globalStates.State = MetronomeState
                 }
                 else{
                     stopMetronome()
+                    globalStates.State = MetronomeState
                 }
             },
             backgroundColor = if (!isPlaying) Color.Green else Color.Red
@@ -201,6 +206,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     } else if(bpm.value < 31 && bpm.value != 20) {
@@ -210,6 +216,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     }
@@ -231,6 +238,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     } else if(bpm.value > 244 && bpm.value != 255) {
@@ -240,6 +248,7 @@ fun Body(globalStates: globalStateDataClass) {
                         globalStates.Slider = sliderPosition
                         if(MetronomeState){
                             stopMetronome()
+                            globalStates.State = MetronomeState
                             Handler().postDelayed({startMetronome(bpm.value.toLong())}, 100)
                         }
                     }
@@ -308,6 +317,7 @@ fun startMetronome(bpm: Long){
     val MetronomeTone = ToneGenerator.TONE_PROP_BEEP
 
     MetronomeState = true
+
 
     /*timerTask {
         val toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)

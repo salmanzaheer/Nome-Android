@@ -42,10 +42,10 @@ fun PresetsNavGraph(
             Body(globalStates)
         }
         composable(Routes.OnlinePresetScreen.route) {
-            OnlinePresetListScreen(vm = vm)
+            OnlinePresetListScreen(vm = vm, globalStates)
         }
         composable(Routes.UserPresetScreen.route) {
-            UserPresetListScreen(vm = userVm, confirmVm, navController)
+            UserPresetListScreen(vm = userVm, confirmVm, navController,globalStates)
         }
         composable(Routes.NewPreset.route){
             NewPresetView()
@@ -61,7 +61,8 @@ fun PresetsNavGraph(
 fun UserPresetListScreen(
     vm: UserPresetListViewModel,
     cvm: ConfirmViewModel,
-    navController: NavController
+    navController: NavController,
+    globalState: globalStateDataClass
 ) {
     /*TODO - Confirmation*/
     val presets by vm.presets
@@ -73,13 +74,15 @@ fun UserPresetListScreen(
         cvm,
         onDelete = vm::deletePreset,
         onSelectPreset = vm::selectedPreset,
-        navController)
+        navController,
+        globalState)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnlinePresetListScreen(
-    vm: PresetListViewModel
+    vm: PresetListViewModel,
+    globalState: globalStateDataClass
 ) {
     //Do we need confirmation?
     /*TODO - Confirmation*/
@@ -91,6 +94,7 @@ fun OnlinePresetListScreen(
         presets = presets,
         selectedPreset = selectedPreset,
         waiting = vm.waiting.value,
-        onDelete = {/*TODO - deletePreset function*/},
-        onSelectPreset = vm::selectedPreset)
+        onDelete = {/*Don't delete online database*/},
+        onSelectPreset = vm::selectedPreset,
+        globalState = globalState)
 }
