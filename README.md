@@ -1,6 +1,6 @@
 # NOME
 
-<img src="https://postimg.cc/BLgS6wgs">
+[![Nome-logos.jpg](https://i.postimg.cc/WzRh5BqD/Nome-logos.jpg)](https://postimg.cc/BLgS6wgs)
 
 
 This is a simple metronome application for Android built using Jetpack Compose. The application provides a clean and easy-to-use interface for controlling the tempo of a musical piece. This app allows users to save their own presets as well as access a list of online presets.
